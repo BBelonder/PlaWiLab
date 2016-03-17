@@ -21,9 +21,11 @@ def getIDs():
 	"""
 	global VendorID
 	global ProductID
-	VendorID=int(input("VendorID? Hex Numbers must start with '0x'. Use lsusb in terminal to find your VID PID "),0) # hex wokrs thanks ",0"
+	VendorID=int(input("VendorID? Hex Numbers must start with '0x'. Use 'lsusb' in terminal to find your VID PID "),0) # hex wokrs thanks ",0"
 	ProductID=int(input("ProductID? Hex Numbers must start with '0x'. "),0)
 # use 'dmesg | grep tty' to find the dev path of the serial to usb bridge to communicate with xgs600	
+#	global port
+#	port=str(input("Port of Serialbridge to XGS600? Use 'demsg | grep tty' to find your port. Must be in Format '/dev/ttyUSB0'))
 
 
 def startline(self):
@@ -53,6 +55,7 @@ def filename():
 
 getIDs()
 Oszi=TDS2000b.TDS2000bDriver(VendorID,ProductID)
+xgs=xgs600.XGS600Driver(port)
 Oszi.SetChannels(1,2)
 print(Oszi.readChannels())
 #print(Oszi.__dict__)
