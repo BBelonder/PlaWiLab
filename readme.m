@@ -1,0 +1,1 @@
+This is but a humble attempt to creat a script, that reads Values from an Tektronix TDS2004b Oscilloscope and pressures from a XGS600 Controller and writes them into a file.
