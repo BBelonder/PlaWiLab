@@ -21,7 +21,7 @@ def getIDs():
 	"""
 	global VendorID
 	global ProductID
-	VendorID=int(input("VendorID? Hex Numbers must start with '0x'. Use lsusb in terminal to find your VID PID "),0) # hex geht so auch
+	VendorID=int(input("VendorID? Hex Numbers must start with '0x'. Use lsusb in terminal to find your VID PID "),0) # hex wokrs thanks ",0"
 	ProductID=int(input("ProductID? Hex Numbers must start with '0x'. Only Dec for now "),0)
 
 
