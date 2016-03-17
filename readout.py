@@ -23,6 +23,7 @@ def getIDs():
 	global ProductID
 	VendorID=int(input("VendorID? Hex Numbers must start with '0x'. Use lsusb in terminal to find your VID PID "),0) # hex wokrs thanks ",0"
 	ProductID=int(input("ProductID? Hex Numbers must start with '0x'. "),0)
+# use 'dmesg | grep tty' to find the dev path of the serial to usb bridge to communicate with xgs600	
 
 
 def startline(self):
