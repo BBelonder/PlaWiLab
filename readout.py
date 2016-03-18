@@ -7,37 +7,30 @@ import datetime
 from drivers import TDS2000b,xgs600
 #import drivers
 
-#def __init__():
-#	"""
-#	general purpose for this tool
-#	"""
-#	getIDs()
-#	Oszi=TDS2000b.TDS2000bDriver(VendorID,ProductID)
-#	XGS=XGS600Driver()
-	
+#	To Do List:
+#		Choose between devices, only use those which are connected
+#		Make out_line responsive to the active, read out channels
 def getIDs():
 	"""
 	asks for Vendor and Product IDs
 	"""
 	global VendorID
 	global ProductID
-	VendorID=int(input("VendorID? Hex Numbers must start with '0x'. Use 'lsusb' in terminal to find your VID PID "),0) # hex wokrs thanks ",0"
-	ProductID=int(input("ProductID? Hex Numbers must start with '0x'. "),0)
-# use 'dmesg | grep tty' to find the dev path of the serial to usb bridge to communicate with xgs600	
-#	global port
-#	port=str(input("Port of Serialbridge to XGS600? Use 'demsg | grep tty' to find your port. Must be in Format '/dev/ttyUSB0'))
+	global port
+	VendorID=int(input("VendorID? Hex must start with 0x! Use lsusb in terminal to find your VID PID "),0) # hex geht so auch
+	ProductID=int(input("ProductID? Hex must start with 0x! "),0)
+	port=input("Which /dev/ is your usb to serial bridge on? Use 'dmesg | grep tty' to find it. Input must be in '/dev/ttyUSBX'")
 
 
 def startline(self):
 	"""
 	Defines the first line of output
 	"""
-	startformat=["Time [t]"]
+	startformat=["Time (t)"]
 	startline="{0:>8s}"
-	
 	for ch in self.readChannels():
 		startline+=";{"+str(ch)+":>8s}"
-		startformat.append("CH"+str(ch))
+		startformat.append("CH"+str(ch)+" ("+self.ReadUnit()[ch]+")")
 		print(startline)
 		print(startformat)
 	startline+="\n"
@@ -53,18 +46,26 @@ def filename():
 	print("Filename will be: "+a)
 	return a
 
+def set_folder():
+	"""
+	Defines the folder where the data will be stored
+	"""
+	folder=str(input("Where do you want to store your data? Folder must be given in str format. "))
+	global outp
+	outp=open(folder+filename(),"w")
+
+set_folder()	
 getIDs()
 Oszi=TDS2000b.TDS2000bDriver(VendorID,ProductID)
-xgs=xgs600.XGS600Driver(port)
 Oszi.SetChannels(1,2)
 print(Oszi.readChannels())
 #print(Oszi.__dict__)
-outp=open(filename(),"w")
+#outp=open("/home/pi/LabData/"+filename(),"w")
 CH=Oszi.readChannels()
 print(CH)
 print(startline(Oszi))
 
-outp.write(startline(Oszi))#Channel aus Oszi einlesen
+outp.write(startline(Oszi))
 max_time=int(input("Wie lange soll ich jetzt aufzeichnen? "))
 start_time=time.time()
 a=0
