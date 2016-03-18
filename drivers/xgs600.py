@@ -6,7 +6,7 @@ import time
 
 class XGS600Driver():
     """ Driver for XGS600 gauge controller """
-    def __init__(self, port):#port='/dev/ttyUSB0'):
+    def __init__(self, port):#'/dev/ttyUSB0'):
         self.serial = serial.Serial(port)
 
     def xgs_comm(self, command):

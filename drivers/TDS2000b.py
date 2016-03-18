@@ -41,6 +41,17 @@ class TDS2000bDriver():
 		self.__widthD={1:127,2:32767}
 		self.__width=2
 		self.SetEncAscii()
+		self.__unitD={}
+		self.ReadUnit()
+		
+	def ReadUnit(self):
+		"""
+		Reads units for each channel and puts them in dict
+		"""
+		self.__unitD=dict.fromkeys(self.__Channels)
+		for ch in self.__Channels:
+			self.__unitD[ch]=self.ask("CH"+str(ch)+"?").split(";")[-1][1]#[-1] takes "V" from the List, [1] takes only the V
+		return self.__unitD
 		
 	def SetEncAscii(self):
 		"""
@@ -174,6 +185,7 @@ if __name__=="__main__":
 	x.SetChannels(1,2)#check
 	print(x.readChannels())#check	
 	print(x.ReadChanSingleValues())
+	print(x.ReadUnit())
 #	x.SetChannels(2,3,1)
 #	print(x.ReadChanSingleValues())
 #	x.SetChannels(3)#check
